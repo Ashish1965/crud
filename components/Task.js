@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import dynamic from "next/dynamic";
 
 const TaskItem = (props) => {
     const { title, description, date , id } = props;
@@ -35,4 +36,4 @@ const TaskItem = (props) => {
   )
 }
 
-export default TaskItem;
+export default dynamic(() => Promise.resolve(TaskItem), { ssr: false });

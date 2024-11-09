@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Toaster } from "react-hot-toast";
+import dynamic from "next/dynamic";
 
 const Layout = (props) => {
   return (
@@ -21,4 +22,4 @@ const Layout = (props) => {
   );
 };
 
-export default Layout;
+export default dynamic(() => Promise.resolve(Layout), { ssr: false });

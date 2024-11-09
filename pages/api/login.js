@@ -18,13 +18,18 @@ export default async (req, res) => {
     }
     const doMatch = await bcrypt.compare(Password, result.password);
     if (doMatch) {
-      const token = Jwt.sign({ userId: result._id }, process.env.JWT_SECRET, {
+      const token = Jwt.sign({ id: result._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       });
-      const { name , email } = result;
+      const { name, email } = result;
+      // console.log(resu)
       res
         .status(201)
-        .json({ token: token, user: { name: name ,  email: email } , message : "Login Successfully" });
+        .json({
+          token: token,
+          user: { name: name, email: email },
+          message: "Login Successfully",
+        });
     } else {
       res.status(401).json({ error: "Email or password don't match!" });
     }

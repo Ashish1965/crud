@@ -4,8 +4,9 @@ import baseUrl from "@/helpers/baseUrl";
 import { FaFacebookF, FaGooglePlusG, FaTwitter } from "react-icons/fa6";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 
-export default function Home() {
+function Home() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -123,3 +124,4 @@ export default function Home() {
     </div>
   );
 }
+export default dynamic(() => Promise.resolve(Home), { ssr: false });

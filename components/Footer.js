@@ -1,5 +1,5 @@
 import React from "react";
-
+import dynamic from "next/dynamic";
 const Footer = () => {
   return (
     <footer className="bg-white shadow dark:bg-gray-900">
@@ -54,4 +54,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default dynamic(() => Promise.resolve(Footer), { ssr: false });

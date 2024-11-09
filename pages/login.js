@@ -6,8 +6,9 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -112,4 +113,5 @@ const login = () => {
   );
 };
 
-export default login;
+export default dynamic(() => Promise.resolve(Login), { ssr: false });
+

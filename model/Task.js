@@ -5,17 +5,33 @@ const taskSchema = new mongoose.Schema({
     type: ObjectId,
     ref: "signup",
   },
-  title: {
+  name: {
     type: String,
     required: true,
   },
-  description: {
+  email: {
     type: String,
     required: true,
   },
-  date : {
+  mobile : {
     type:String,
     required:true,
+  },
+  designation : {
+    type:String,
+    required:true,
+  },
+  gender : {
+    type:String,
+    required:true,
+  },
+  course : {
+    type:String,
+    required:true,
+  },
+  mediaUrl: {
+    type: String,
+    required: true,
   }
 });
 

@@ -8,12 +8,10 @@ export default async function handler(req, res) {
     await getUserSpecificTasks(req, res);
   } else if (req.method === "POST") {
     await saveTask(req, res);
-  }
-  else if(req.method === "DELETE"){
-    await deleteTask(req , res);
-  }
-  else if(req.method === "PATCH"){
-    await editTask(req , res);
+  } else if (req.method === "DELETE") {
+    await deleteTask(req, res);
+  } else if (req.method === "PATCH") {
+    await editTask(req, res);
   }
 }
 
@@ -23,9 +21,9 @@ async function getUserSpecificTasks(req, res) {
     return res.status(401).json({ error: "You must logged-in" });
   }
   try {
-    const { userId } = Jwt.verify(authorization, process.env.JWT_SECRET);
-    const result = await Task.find({user : userId});
-    console.log(result);
+    const { id } = Jwt.verify(authorization, process.env.JWT_SECRET);
+    const result = await Task.find({ user: id });
+    // console.log(result);
     res.status(200).json(result);
   } catch (err) {
     console.log(err);
@@ -33,49 +31,60 @@ async function getUserSpecificTasks(req, res) {
 }
 async function deleteTask(req, res) {
   try {
-    const {Id} = req.body;
-    const result = await Task.findByIdAndDelete({_id : Id});
-    console.log(result);
-    res.status(200).json({message : "Task Deleted Successfully"});
+    const { Id } = req.body;
+    const result = await Task.findByIdAndDelete({ _id: Id });
+    // console.log(result);
+    res.status(200).json({ message: "Task Deleted Successfully" });
   } catch (err) {
     console.log(err);
   }
 }
 async function saveTask(req, res) {
-  const { Title, Description, Date } = req.body;
+  const { Name, Email, Mobile, Designation, Gender, Course, MediaUrl } = req.body;
   const { authorization } = req.headers;
-  console.log(authorization);
+  // console.log(authorization);
+  console.log(Designation);
   if (!authorization) {
     return res.status(401).json({ error: "You must logged-in" });
   }
   try {
-    if (!Title || !Description || !Date) {
+    if (!Name || !Email || !Mobile || !Designation || !Gender || !Course || !MediaUrl) {
       return res.status(422).json({ error: "Please Add all the fields" });
     }
-    const { userId } = Jwt.verify(authorization, process.env.JWT_SECRET);
+    const { id } = Jwt.verify(authorization, process.env.JWT_SECRET);
+    // console.log(id);
     const task = await new Task({
-      user : userId ,
-      title: Title,
-      description: Description,
-      date : Date,
+      user: id,
+      name : Name,
+      email : Email,
+      mobile : Mobile,
+      designation : Designation,
+      gender : Gender,
+      course : Course,
+      mediaUrl : MediaUrl
     }).save();
-    res.status(201).json({message : "Task created successfully"});
+    res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
     console.log(err);
   }
 }
 
 async function editTask(req, res) {
-  const { TaskId , Title , Description } = req.body;
+  const {TaskId , Name, Email, Mobile, Designation, Gender, Course, MediaUrl } = req.body;
   try {
     const task = await Task.findOneAndUpdate(
       { _id: TaskId },
       {
-        title: Title,
-        description: Description,
+        name : Name, 
+        email : Email,
+        mobile : Mobile,
+        designation : Designation,
+        gender : Gender,
+        course : Course,
+        mediaUrl : MediaUrl
       }
     );
-    console.log(task);
+    // console.log(task);
 
     res.status(201).json({ message: "Task Updated Successfully" });
   } catch (err) {
